@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scientific Calculator</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #1e1e1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .calculator {
+    width: 320px;
+    background: #2b2b2b;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  }
+
+  #display {
+    width: 100%;
+    height: 60px;
+    background: #1e1e1e;
+    color: #fff;
+    font-size: 28px;
+    border-radius: 10px;
+    text-align: right;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    overflow-x: auto;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  button {
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    background: #3c3c3c;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  button:hover {
+    background: #555;
+  }
+
+  .operator { background: #ff9500; }
+  .operator:hover { background: #ffa733; }
+  .equal { background: #0a84ff; grid-column: span 2; }
+  .equal:hover { background: #3399ff; }
+  .clear { background: #ff3b30; }
+  .clear:hover { background: #ff6250; }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+  <div id="display">0</div>
+  <div class="buttons">
+    <button class="clear" onclick="clearDisplay()">C</button>
+    <button onclick="appendValue('(')">(</button>
+    <button onclick="appendValue(')')">)</button>
+    <button class="operator" onclick="appendValue('/')">/</button>
+
+    <button onclick="appendValue('7')">7</button>
+    <button onclick="appendValue('8')">8</button>
+    <button onclick="appendValue('9')">9</button>
+    <button class="operator" onclick="appendValue('*')">*</button>
+
+    <button onclick="appendValue('4')">4</button>
+    <button onclick="appendValue('5')">5</button>
+    <button onclick="appendValue('6')">6</button>
+    <button class="operator" onclick="appendValue('-')">-</button>
+
+    <button onclick="appendValue('1')">1</button>
+    <button onclick="appendValue('2')">2</button>
+    <button onclick="appendValue('3')">3</button>
+    <button class="operator" onclick="appendValue('+')">+</button>
+
+    <button onclick="appendValue('0')">0</button>
+    <button onclick="appendValue('.')">.</button>
+    <button class="equal" onclick="calculateResult()">=</button>
+    <button onclick="appendValue('Math.sqrt(')">√</button>
+
+    <button onclick="appendValue('Math.sin(')">sin</button>
+    <button onclick="appendValue('Math.cos(')">cos</button>
+    <button onclick="appendValue('Math.tan(')">tan</button>
+    <button onclick="appendValue('Math.log(')">log</button>
+
+    <button onclick="appendValue('**2')">x²</button>
+    <button onclick="appendValue('**')">^</button>
+    <button onclick="appendValue('!')">!</button>
+    <button onclick="appendValue('%')">%</button>
+  </div>
+</div>
+
+<script>
+let display = document.getElementById('display');
+
+function appendValue(val) {
+    if(display.innerText === "0") display.innerText = "";
+    display.innerText += val;
+}
+
+function clearDisplay() {
+    display.innerText = "0";
+}
+
+function calculateResult() {
+    let exp = display.innerText;
+    try {
+        // Factorial handling
+        if(exp.includes('!')){
+            exp = exp.replace(/(\d+)!/g, (match, num) => {
+                return factorial(parseInt(num));
+            });
+        }
+        let result = eval(exp);
+        display.innerText = result;
+    } catch {
+        display.innerText = "Error";
+    }
+}
+
+function factorial(n) {
+    if(n < 0) return NaN;
+    if(n === 0 || n === 1) return 1;
+    return n * factorial(n-1);
+}
+</script>
+
+</body>
+</html>
